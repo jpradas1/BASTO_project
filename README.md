@@ -1,1 +1,1 @@
-# BASTÓ-project
+# BASTÓ Project
