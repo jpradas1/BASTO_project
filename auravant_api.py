@@ -117,11 +117,10 @@ class Auravant_API(object):
 
 # url = 'https://api.auravant.com/api/'
 
-# token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELTc2MmYzOTBmYTExYmIwYTlkYmI1OWRhZjJmMDUyNTU3IiwiZXhwIjoxNjgzODgzMDk2LCJ2IjoxNTQ2LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjA4fQ.uBjwDPApnEimVmgpa3Ky0BlhYK7BaOgqurqTpUV4cSA'
-token2 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELThmMTZjOWJiZDM0NjEyZjJmNzA4YTYwMjZkOGRjYmQ5IiwiZXhwIjoxNjc4ODgxNDIwLCJ2IjoxMjkxLCJsb2NhbGUiOiJlc19BUiIsImRldiI6MTY3fQ.ody9RQRIS0KhHFEn84KYsOEI7eFApist_5S61E7wupw'
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELTc2MmYzOTBmYTExYmIwYTlkYmI1OWRhZjJmMDUyNTU3IiwiZXhwIjoxNjgzODgzMDk2LCJ2IjoxNTQ2LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjA4fQ.uBjwDPApnEimVmgpa3Ky0BlhYK7BaOgqurqTpUV4cSA'
 
 # polygon = "POLYGON((-59.9799656867981 -35.8329711461622,-59.9799656867981 -35.8241463744063,-59.9682283401489 -35.8241463744063,-59.9682283401489 -35.8329711461622,-59.9799656867981 -35.8329711461622))"
-A = Auravant_API(token2)
+A = Auravant_API(token)
 # print(A.get_farms())
 print(A.get_all_fields())
 # print(A.get_fields('124923'))
