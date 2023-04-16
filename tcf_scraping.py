@@ -2,7 +2,13 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-import time, os
+import time, os, shutil
+import pandas as pd
+from datetime import datetime
+import numpy as np
+
+import warnings
+warnings.filterwarnings('ignore')
 
 class TCF_Scraping(object):
     url = 'https://tableroforrajero.crea.org.ar/dashboardcrea2/index.php/crea_session_manager'
@@ -31,20 +37,6 @@ class TCF_Scraping(object):
     def _quit(self):
         self.driver.quit()
 
-    # def _get_elements(self, by: By, key1: str, key2: str):
-    #     self._find_element(by, key1).click()
-    #     elements = []
-    #     flag, ii = True, 1
-    #     while flag:
-    #         try:
-    #             select_element = self.driver.find_element(by, key2.format(ii))
-    #             elements.append(select_element.text)
-    #             ii += 1
-    #         except:
-    #             flag = False
-    #     self._find_element(by, key1).click()
-    #     return elements
-
     def _select_values(self, by: By, key1: str, key2: str, value: str):
         self._find_element(by, key1).click()
 
@@ -71,7 +63,8 @@ class TCF_Scraping(object):
 
     def _custom_name(self, year: str, region: str):
         download_dir = './dataset/'
-        new_path = download_dir + region.replace(' ', '_') + '/'
+        region = region.replace('.','').replace('-','').replace(' ','_')
+        new_path = download_dir + region + '/'
         old_name = "Tablero de seguimiento forrajero.csv"
         name = year + '_' + region + '.csv'
 
@@ -132,7 +125,42 @@ class TCF_Scraping(object):
         print(years)
         self._quit()
 
-path = '/home/uqbar/Desktop/Data-Science/Henry_PF/BASTO-project/dataset/'
-TCF = TCF_Scraping(path)
+    def ETL(self, region: str):
+        # self._quit()
+        region = region.replace('.','').replace('-','').replace(' ','_')
+        path = './dataset/' + region + '/'
+        file_list, files = os.listdir(path), []
 
-TCF.development('Centro')
+        for file_name in file_list:
+            files.append(file_name)
+
+        dfs = [pd.read_csv(path + f).set_index('Recurso').T for f in files[::-1]]
+
+        for df in dfs:
+            df.drop('Total', inplace=True)
+            df.reset_index(inplace=True)
+            df.rename(columns={'index': 'Fecha'}, inplace=True)
+            df['Fecha'] = df['Fecha'].str.replace('([A-z]*\')', '', regex=True)#.replace("'", '')
+            df['Fecha2'] = np.arange(1,13,1).astype(str)
+            df['Fecha'] = df['Fecha2'] + '-' + df['Fecha']
+            df.drop(columns=['Fecha2'], inplace=True)
+
+        concat = pd.concat(dfs)
+        concat['Fecha'] = concat['Fecha'].apply(lambda x: datetime.strptime(x, '%m-%y'))
+        concat['Fecha'] = pd.to_datetime(concat['Fecha']).dt.strftime('%m-%Y')
+
+        for c in concat.columns[1:]:
+            concat[c] = concat[c].replace('n/d', np.nan).str.replace('.','').str.replace(',','.')
+            concat[c] = concat[c].astype(float)
+
+        concat.to_csv('./dataset/' + region + '.csv', index=False)
+
+        if os.path.exists('./dataset/' + region + '.csv'):
+            shutil.rmtree(path)
+
+if __name__ == "__main__":
+    path = '/home/uqbar/Desktop/Data-Science/Henry_PF/BASTO-project/dataset/'
+    TCF = TCF_Scraping(path)
+    region = 'Cordoba Norte'
+    TCF.development(region)
+    TCF.ETL(region)
