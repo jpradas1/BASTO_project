@@ -13,6 +13,7 @@ warnings.filterwarnings('ignore')
 class TCF_Scraping(object):
     url = 'https://tableroforrajero.crea.org.ar/dashboardcrea2/index.php/crea_session_manager'
     driver = 0
+    years, zones = [], []
 
     def __init__(self, absolute_path: str):
         firefox_profile = webdriver.FirefoxProfile()
@@ -34,7 +35,7 @@ class TCF_Scraping(object):
         this_element = self.driver.find_element(by, key)
         return this_element
     
-    def _quit(self):
+    def quit(self):
         self.driver.quit()
 
     def _select_values(self, by: By, key1: str, key2: str, value: str):
@@ -55,7 +56,7 @@ class TCF_Scraping(object):
             select_element = self.driver.find_element(by, key2.format(index))
             select_element.click()
         except:
-            print('Not available')
+            print('Not available {}'.format(value))
         return elements
     
     def _update_table(self):
@@ -85,7 +86,7 @@ class TCF_Scraping(object):
 
         self._custom_name(year, region)
 
-    def development(self, region: str):
+    def development(self):
         self._webd_click(By.CSS_SELECTOR, 'a.btn.btn-default')
         self._webd_click(By.ID, 'acept')
         self._webd_click(By.ID, 'invited_user')
@@ -94,7 +95,6 @@ class TCF_Scraping(object):
         self._webd_click(By.XPATH,
                          r'/html/body/div/div[2]/form/table/tbody/tr[1]/td[11]/button')
 
-        month, ii = '12', 1
 
         years = self._select_values(By.XPATH,
                                    r'//*[@id="year_chosen"]',
@@ -104,29 +104,50 @@ class TCF_Scraping(object):
         self._select_values(By.XPATH, 
                                 r'//*[@id="month_chosen"]',
                                 r'/html/body/div/div[2]/form/table/tbody/tr[2]/td[2]/div/div/ul/li[{}]',
-                                month)
-        self._select_values(By.XPATH,
+                                '12')
+        
+        zones = self._select_values(By.XPATH,
                             r'//*[@id="entity_id_chosen"]',
                             r'/html/body/div/div[2]/form/table/tbody/tr[3]/td[2]/div/div/ul/li[{}]',
-                            region)
+                            'Centro')
+        
+        self.years = years
+        self.zones = zones
+    
+    def downloading(self):
+        jj = 1
+        for zone in self.zones[-5:]:
+            ii = 1
 
-        for year in years:
-            time.sleep(2)
             self._select_values(By.XPATH,
-                                r'//*[@id="year_chosen"]',
-                                r'/html/body/div/div[2]/form/table/tbody/tr[1]/td[3]/div/div/ul/li[{}]',
-                                year)
-            self._download_csv(year, region)
+                                r'//*[@id="entity_id_chosen"]',
+                                r'/html/body/div/div[2]/form/table/tbody/tr[3]/td[2]/div/div/ul/li[{}]',
+                                zone)
+            if jj == 1:
+                print(self.years, self.zones[-5:])
 
-            progress = f"Downloading file {ii} of {len(years)}"
-            ii = ii + 1
-            print(progress, end='\r')
+            for year in self.years:
+                time.sleep(2)
+                self._select_values(By.XPATH,
+                                    r'//*[@id="year_chosen"]',
+                                    r'/html/body/div/div[2]/form/table/tbody/tr[1]/td[3]/div/div/ul/li[{}]',
+                                    year)
 
-        print(years)
-        self._quit()
+                self._download_csv(year, zone)
+
+                progress = f"Downloading file {ii} of {len(self.years)} zone {jj} of {len(self.zones)}"
+                ii = ii + 1
+                print(progress, end='\r')
+
+            self.ETL(zone)
+            jj = jj + 1
+
+        self.quit()
+        self.concat()
+        print('Done!!!')
 
     def ETL(self, region: str):
-        # self._quit()
+        # self.quit()
         region = region.replace('.','').replace('-','').replace(' ','_')
         path = './dataset/' + region + '/'
         file_list, files = os.listdir(path), []
@@ -158,9 +179,23 @@ class TCF_Scraping(object):
         if os.path.exists('./dataset/' + region + '.csv'):
             shutil.rmtree(path)
 
+    def concat(self):
+        path = './dataset/'
+        file_list = os.listdir(path)[1:]
+        dfs = [pd.read_csv(path + file).set_index('Fecha') for file in file_list]
+        for df in dfs:
+            df.dropna(how='all', inplace=True)
+
+        this_concat = pd.concat(dfs)
+        name = 'All_Harvest.csv'
+        this_concat.to_csv(path + name)
+        
+        if os.path.exists(path + name):
+            for file in file_list:
+                os.remove(path + file)
+
 if __name__ == "__main__":
     path = '/home/uqbar/Desktop/Data-Science/Henry_PF/BASTO-project/dataset/'
     TCF = TCF_Scraping(path)
-    region = 'Cordoba Norte'
-    TCF.development(region)
-    TCF.ETL(region)
+    TCF.development()
+    TCF.downloading()
