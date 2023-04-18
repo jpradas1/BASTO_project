@@ -1,6 +1,6 @@
 ![Encabezado](https://github.com/jpradas1/BASTO-project/blob/main/Images/encabezado.jpg)
 
-# **Bastó Project - Team #3
+# **Bastó Project - Team #3**
 ______
 Somos un grupo de Data Scientists e ingresamos en el programa *Henry Projects*, se trata de una iniciativa para que los estudiantes de Henry, en su etapa de proyecto final, tengan la oportunidad de realizar proyectos reales. En nuestro caso nos incorporaramos a la empresa *Bastó Ganado Inteligente*, y por un mes trabajamos en un entorno real.
 ______
@@ -73,9 +73,9 @@ El desafío propuesto:
 * Buscar/complementar investigación con personas pertinentes/especialistas al tema
 
 ## **Roles y responsabilidades**
-* Data Engineers: Prada Sierra, Juan Camilo; Martinez, Carlos Santiago
-* Data Analyst: Zarich Santi, Daniela Emilia
-* Data Scientist: Gutierrez Mas, Gabriel Hernán; Hoyos Hoyos, Pedro
+* **Data Engineers**: Prada Sierra, Juan Camilo; Martinez, Carlos Santiago
+* **Data Analyst**: Zarich Santi, Daniela Emilia
+* **Data Scientist**: Gutierrez Mas, Gabriel Hernán; Hoyos Hoyos, Pedro
 
 ## **Tablas de relaciones**
 ![Tabla_relaciones](https://github.com/jpradas1/BASTO-project/blob/main/Images/Tabla%20relaciones.jpeg)
