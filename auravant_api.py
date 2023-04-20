@@ -36,7 +36,7 @@ class Auravant_API(object):
         fields = self._get_info()['farms'][id_farm]['fields']
         id_fields = [x for x in fields.keys()]
         names = [fields[x]['name'] for x in id_fields]
-        bbox = [fields[x]['shapes']['current']['bbox'] for x in id_fields]
+        bbox = [fields[x]['shapes']['current']['polygon'] for x in id_fields]
         areas = [fields[x]['shapes']['current']['area'] for x in id_fields]
 
         df = pd.DataFrame({'id_field': id_fields, 'name': names, 'area': areas,
@@ -48,7 +48,7 @@ class Auravant_API(object):
         id_fields = [y for x in farms.keys() for y in farms[x]['fields'].keys()]
         names = [farms[x]['fields'][y]['name'] for x in farms.keys() \
                  for y in farms[x]['fields'].keys()]
-        bbox = [farms[x]['fields'][y]['shapes']['current']['bbox'] for x in farms.keys() \
+        bbox = [farms[x]['fields'][y]['shapes']['current']['polygon'] for x in farms.keys() \
                  for y in farms[x]['fields'].keys()]
         id_farms = [x for x in farms.keys() for y in farms[x]['fields'].keys()]
         areas = [farms[x]['fields'][y]['shapes']['current']['area'] for x in farms.keys() \
