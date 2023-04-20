@@ -1,6 +1,7 @@
 import requests
 import json
 import pandas as pd
+import os
 
 class Auravant_API(object):
     url = 'https://api.auravant.com/api/'
@@ -58,6 +59,20 @@ class Auravant_API(object):
                             'area': areas, 'polygon': bbox})
         return df
     
+    def get_max_vegetation(self):
+        file = './dataset/All_Harvest.csv'
+        if os.path.exists(file):
+            df = pd.read_csv(file).set_index('Fecha')
+            crops = df.columns
+            maxx = [df[c].max() for c in crops]
+            df_max = pd.DataFrame({'Vegetation': crops, 'Max_Biomass': maxx})
+            return df_max
+        
+        print("There's no file './dataset/All_Harvest.csv'. \n \
+                In order to build this file, please run\n \
+                python3 tcf_scraping.py")
+
+
     def get_NDVI(self, id_field: str, date_from = None, date_to = None, latest = False):
 
         id_field = int(id_field)
@@ -117,10 +132,11 @@ class Auravant_API(object):
 
 # url = 'https://api.auravant.com/api/'
 
-# token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELTc2MmYzOTBmYTExYmIwYTlkYmI1OWRhZjJmMDUyNTU3IiwiZXhwIjoxNjgzODgzMDk2LCJ2IjoxNTQ2LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjA4fQ.uBjwDPApnEimVmgpa3Ky0BlhYK7BaOgqurqTpUV4cSA'
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELTc2MmYzOTBmYTExYmIwYTlkYmI1OWRhZjJmMDUyNTU3IiwiZXhwIjoxNjgzODgzMDk2LCJ2IjoxNTQ2LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjA4fQ.uBjwDPApnEimVmgpa3Ky0BlhYK7BaOgqurqTpUV4cSA'
 
 # polygon = "POLYGON((-59.9799656867981 -35.8329711461622,-59.9799656867981 -35.8241463744063,-59.9682283401489 -35.8241463744063,-59.9682283401489 -35.8329711461622,-59.9799656867981 -35.8329711461622))"
-# A = Auravant_API(token)
+A = Auravant_API(token)
+print(A.get_max_vegetation())
 # print(A.get_farms())
 # print(A.get_all_fields())
 # print(A.get_fields('124923'))
