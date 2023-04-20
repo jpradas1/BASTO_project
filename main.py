@@ -5,7 +5,7 @@ import json
 import pandas as pd
 
 app = FastAPI(title= 'Estimación biomasa disponible.', 
-              description= 'Con el mapa de dinámica de pastoreo y las imágenes satelitales con NDVI, calcular las superficies consumidas vs la remanente. Objetivo, saber cuánto forraje se dispone y por cuánto tiempo.')
+              description= 'Con las imágenes satelitales para obtener el NDVI de un campo, saber cuánto forraje se dispone y por cuánto tiempo.')
 
 df = pd.read_csv('./dataset/All_Harvest.csv').set_index('Fecha')
 df.dropna(how='all', inplace=True)
@@ -33,11 +33,10 @@ async def Lotes_disponibles():
     total_fields = []
     fields = [f for f in df_field.to_dict(orient= 'records')]
     for ind, ele in enumerate(fields, 1):
-        salida = f'''El lote numero {ind} es 
-        {ele} 
-        '''
+        salida = {f'El lote numero {ind} es: {ele}'}
         total_fields.append(salida)
     return total_fields
+
 
 
 @app.get('/Biomasa y Pastoreo', description= 'Introduzca los valores solicitados como números enteros, sin comas, puntos ni espacios.')
@@ -70,13 +69,14 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: int, Cow_number: int, Type_culti
     
     time = biomass / total_ration
 
-    return f'''Información del lote {Id_lote}: 
+    ans = {'Id_lote': Id_lote,
+           'Nombre del lote': name_field, 
+           'Campo al que pertenece': name_farm,
+           'Área': round(area, 3), 
+           'Tipo de cultivo': cultivo,
+           'Total animales': Cow_number,
+           'Biomasa del lote en kg': biomass, 
+           'Días de pastoreo estimados': round(time)}
 
-    Nombre del lote: {name_field} 
-    Campo al que pertenece: {name_farm} 
-    Área: {round(area, 3)} ha 
-    Tipo de cultivo: {cultivo} 
-    Total animales: {Cow_number} 
-
-    La biomasa es de {biomass} kg para todo el campo. Con estos valores se estiman {round(time)} días de pastoreo.'''
+    return {"Información del lote": ans}
     
