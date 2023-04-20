@@ -49,14 +49,16 @@ class Auravant_API(object):
         id_fields = [y for x in farms.keys() for y in farms[x]['fields'].keys()]
         names = [farms[x]['fields'][y]['name'] for x in farms.keys() \
                  for y in farms[x]['fields'].keys()]
-        bbox = [farms[x]['fields'][y]['shapes']['current']['polygon'] for x in farms.keys() \
+        polygon = [farms[x]['fields'][y]['shapes']['current']['polygon'] for x in farms.keys() \
+                 for y in farms[x]['fields'].keys()]
+        bbox = [farms[x]['fields'][y]['shapes']['current']['bbox'] for x in farms.keys() \
                  for y in farms[x]['fields'].keys()]
         id_farms = [x for x in farms.keys() for y in farms[x]['fields'].keys()]
         areas = [farms[x]['fields'][y]['shapes']['current']['area'] for x in farms.keys() \
                  for y in farms[x]['fields'].keys()]
 
         df =  pd.DataFrame({'id_field': id_fields, 'name': names, 'id_farm': id_farms,
-                            'area': areas, 'polygon': bbox})
+                            'area': areas, 'polygon': polygon, 'bbox': bbox})
         return df
     
     def get_max_vegetation(self):
