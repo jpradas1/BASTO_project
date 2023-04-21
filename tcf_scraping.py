@@ -116,15 +116,15 @@ class TCF_Scraping(object):
     
     def downloading(self):
         jj = 1
-        for zone in self.zones[-5:]:
+        for zone in self.zones:
             ii = 1
 
             self._select_values(By.XPATH,
                                 r'//*[@id="entity_id_chosen"]',
                                 r'/html/body/div/div[2]/form/table/tbody/tr[3]/td[2]/div/div/ul/li[{}]',
                                 zone)
-            if jj == 1:
-                print(self.years, self.zones[-5:])
+            # if jj == 1:
+            #     print(self.years, self.zones)
 
             for year in self.years:
                 time.sleep(2)
