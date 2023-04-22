@@ -69,14 +69,14 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: int, Cow_number: int, Type_culti
     
     time = round(biomass / total_ration)
 
-    biomass_20 = biomass * .80
-    time_20 = round(biomass_20 / total_ration)
+    biomass_80 = biomass * .20
+    time_80 = round( biomass_80 / total_ration)
 
     biomass_50 = biomass * .50
     time_50 = round( biomass_50 / total_ration)
 
-    biomass_80 = biomass * .20
-    time_80 = round( biomass_80 / total_ration)
+    biomass_20 = biomass * .80
+    time_20 = round(biomass_20 / total_ration)
 
     water = Cow_number * 100
     total_water = water * round(time)
@@ -91,9 +91,9 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: int, Cow_number: int, Type_culti
            'Total de agua para los días de pastoreo estimados': total_water,
            'Biomasa del lote en kg': biomass, 
            'Días de pastoreo estimados': time,
-           f'Días de pastoreo estimados con el 20% ({round(biomass_20, 1)} kg) de forraje consumido': time_20,
+           f'Días de pastoreo estimados con el 20% ({round(biomass_80, 1)} kg) de forraje consumido': time_20,
            f'Días de pastoreo estimados con el 50% ({round(biomass_50, 1)} kg) de forraje consumido': time_50,
-           f'Días de pastoreo estimados con el 80% ({round(biomass_80, 1)} kg) de forraje consumido': time_80}
+           f'Días de pastoreo estimados con el 80% ({round(biomass_20, 1)} kg) de forraje consumido': time_80}
     
     global biomasa_lote
     biomasa_lote = biomass 
@@ -111,22 +111,22 @@ async def Ideal_de_animales(dias: int):
     animals = round(biomasa_lote / time_per_ration)
     total_ration = 15 * animals
 
-    biomasa_lote_20 = biomasa_lote * .80 
-    time_20 = round( biomasa_lote_20 / total_ration)
+    biomasa_lote_80 = biomasa_lote * .20 
+    time_80 = round( biomasa_lote_80 / total_ration)
 
     biomasa_lote_50 = biomasa_lote * .50
     time_50 = round( biomasa_lote_50 / total_ration)
 
-    biomasa_lote_80 = biomasa_lote * .20 
-    time_80 = round( biomasa_lote_80 / total_ration)
+    biomasa_lote_20 = biomasa_lote * .80 
+    time_20 = round( biomasa_lote_20 / total_ration)
 
     water = animals * 100
 
     ans = { 'Biomasa del lote en kg': biomasa_lote,
             f'Cantidad de animales ideales para {dias} días de pastoreo': animals,
             'Total de agua por día en litros': water,
-            f'Días de pastoreo estimados con el 20% ({round(biomasa_lote_20, 1)} kg) de forraje consumido': time_20,
+            f'Días de pastoreo estimados con el 20% ({round(biomasa_lote_80, 1)} kg) de forraje consumido': time_20,
             f'Días de pastoreo estimados con el 50% ({round(biomasa_lote_50, 1)} kg) de forraje consumido': time_50,
-            f'Días de pastoreo estimados con el 80% ({round(biomasa_lote_80, 1)} kg) de forraje consumido': time_80} 
+            f'Días de pastoreo estimados con el 80% ({round(biomasa_lote_20, 1)} kg) de forraje consumido': time_80} 
 
     return ans
