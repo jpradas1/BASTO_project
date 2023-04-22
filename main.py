@@ -28,19 +28,17 @@ async def tipos_de_cultivo():
 
 @app.get('/Lotes', description= "A continuación se va a desplegar una lista de todos los lotes que usted dispone. Por favor, verifique el número 'id_field' del lote para el análisis.")
 async def Lotes_disponibles():
+
     df_field = A.get_all_fields()
     df_field = pd.DataFrame(df_field)
-    total_fields = []
-    fields = [f for f in df_field.to_dict(orient= 'records')]
-    for ind, ele in enumerate(fields, 1):
-        salida = {f'El lote numero {ind} es: {ele}'}
-        total_fields.append(salida)
-    return total_fields
+    
+    dicc = df_field.to_dict(orient= 'index')
 
+    return dicc
 
 
 @app.get('/Biomasa y Pastoreo', description= 'Introduzca los valores solicitados como números enteros, sin comas, puntos ni espacios.')
-async def Biomasa_y_Pastoreo_por_campo(Id_lote: int, Cow_number: int, Type_cultivo: int):
+async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_cultivo: int):
 
     tipos = await tipos_de_cultivo()
     for i, e in enumerate(tipos, 1):
@@ -58,7 +56,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: int, Cow_number: int, Type_culti
     df_farm = A.get_farms()
     df_ndvi = A.get_NDVI(Id_lote)
 
-    name_field = df_field[df_field['id_field'] == str(Id_lote)]['name'].values[0]
+    name_field = df_field[df_field['id_field'] == Id_lote]['name'].values[0]
     name_farm = df_farm[df_farm['id_farm'] == df_field[df_field['id_field'] == '417283']['id_farm'].values[0]]['name'].values[0]
     area = df_field.loc[df_field['id_field'] == str(Id_lote)]['area'].values[0]
     Biomasa_max = df[cultivo].max()

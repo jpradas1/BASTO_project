@@ -30,7 +30,7 @@ class Auravant_API(object):
 
         df = pd.DataFrame({'id_farm': id_farms, 'name': names,
                             'polygon': bbox, 'N_fields': number})
-
+        
         return df
     
     def get_fields(self, id_farm: str):
@@ -42,6 +42,7 @@ class Auravant_API(object):
 
         df = pd.DataFrame({'id_field': id_fields, 'name': names, 'area': areas,
                             'polygon': bbox})
+        
         return df
     
     def get_all_fields(self):
@@ -59,6 +60,7 @@ class Auravant_API(object):
 
         df =  pd.DataFrame({'id_field': id_fields, 'name': names, 'id_farm': id_farms,
                             'area': areas, 'polygon': polygon, 'bbox': bbox})
+
         return df
     
     def get_max_vegetation(self):
