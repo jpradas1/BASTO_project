@@ -101,7 +101,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: int, Cow_number: int, Type_culti
     return {"Información del lote": ans}
 
 
-@app.get('/Cantidad de animales ideales', description= 'Ingrese por favor la cantidad de días en los que pretende dejar el ganado en .')
+@app.get('/Cantidad de animales ideales', description= 'Ingrese por favor la cantidad de días en los que pretende dejar el ganado en el lote anteriormente consultado.')
 async def Ideal_de_animales(dias: int):
 
     global biomasa_lote
