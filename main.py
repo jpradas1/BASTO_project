@@ -19,11 +19,12 @@ A = Auravant_API(token)
 @app.get('/Cultivos', description= 'A continuación se va a desplegar una lista de tipos de cultivos, para poder determinar la cantidad de biomasa y días de pastoreo de su lote. Por favor, verifique el número al que corresponde su tipo de cultivo.')
 async def tipos_de_cultivo():
     cultivos = sorted(df.columns.to_list())
-    tipos_cultivos = []
-    for i, e in enumerate(cultivos, 1):
-        salida = f'El cultivo número {i} es {e}'
-        tipos_cultivos.append(salida)
-    return tipos_cultivos
+    tipos_cultivos = [cultivo for cultivo in cultivos if len(cultivo) >4]
+    cultivos_dicc = [] 
+    for i, e in enumerate(tipos_cultivos, 1):
+        salida = {i: e}
+        cultivos_dicc.append(salida)
+    return cultivos_dicc
 
 
 @app.get('/Lotes', description= "A continuación se va a desplegar una lista de todos los lotes que usted dispone. Por favor, verifique el número 'id_field' del lote para el análisis.")
@@ -40,17 +41,11 @@ async def Lotes_disponibles():
 @app.get('/Biomasa y Pastoreo', description= 'Introduzca los valores solicitados como números enteros, sin comas, puntos ni espacios.')
 async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_cultivo: int):
 
-    tipos = await tipos_de_cultivo()
-    for i, e in enumerate(tipos, 1):
-        if i == Type_cultivo:
-            contador = 0
-            for char in e[:20]:
-                if char.isalnum():
-                    contador += 1
-            if contador == 16:
-                cultivo = e[23:] 
-            elif contador == 17:
-                cultivo = e[24:]
+    types = await tipos_de_cultivo()
+
+    for ind, cultivos in enumerate(types, 1):
+        if Type_cultivo == ind:
+            cultivo = cultivos[ind]
 
     df_field = A.get_all_fields()
     df_farm = A.get_farms()
