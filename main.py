@@ -85,9 +85,9 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
            'Biomasa del lote en kg': biomass,
            'NDVI': df_ndvi['ndvi_mean'][0], 
            'Días de pastoreo estimados': time,
-           f'Días de pastoreo estimados con el 20% de forraje consumido': time_20,
+           f'Días de pastoreo estimados con el 20% de forraje consumido': time_80,
            f'Días de pastoreo estimados con el 50% de forraje consumido': time_50,
-           f'Días de pastoreo estimados con el 80% de forraje consumido': time_80}
+           f'Días de pastoreo estimados con el 80% de forraje consumido': time_20}
     
     global biomasa_lote
     biomasa_lote = biomass 
@@ -114,8 +114,8 @@ async def Ideal_de_animales(dias: int):
     ans = { 'Biomasa del lote en kg': biomasa_lote,
             f'Cantidad de animales ideales para {dias} días de pastoreo': animals,
             'Total de agua por día en litros': water,
-            f'Cantidad de animales ideales para {dias} días de pastoreo con el 20% consumido': animals_20,
+            f'Cantidad de animales ideales para {dias} días de pastoreo con el 20% consumido': animals_80,
             f'Cantidad de animales ideales para {dias} días de pastoreo con el 50% consumido': animals_50,
-            f'Cantidad de animales ideales para {dias} días de pastoreo con el 80% consumido': animals_80} 
+            f'Cantidad de animales ideales para {dias} días de pastoreo con el 80% consumido': animals_20} 
 
     return ans
