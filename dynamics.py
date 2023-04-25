@@ -1,6 +1,6 @@
 from shapely.geometry import Polygon, Point
 import folium
-# import pyproj
+import pyproj
 # import pandas as pd
 
 
@@ -81,7 +81,7 @@ class Grid(object):
         return this_points
     
     def cmap(self, intersection: list, points: list):
-        this_cmap = {}
+        this_cmap, this_cmap2 = {}, {}
         for ii, inter in enumerate(intersection):
             inter = Polygon(inter)
             this_cmap[ii] = 0
@@ -89,13 +89,18 @@ class Grid(object):
                 if inter.contains(dot):
                     this_cmap[ii] += 1
 
+        suma = sum([x for x in this_cmap.values()])
+
+        for k, v in this_cmap.items():
+            this_cmap2[k] = round(v / suma, 3) * 100
+
         cmin = min(this_cmap.values())
         cmax = max(this_cmap.values())
 
         for k, v in this_cmap.items():
             this_cmap[k] = round((v - cmin) / (cmax - cmin), 2)
 
-        return this_cmap
+        return this_cmap, this_cmap2
     
     def heat_map(self, id_field: str, points: list, colors: list):
         # points = [self.repoint(p) for p in points]
@@ -107,19 +112,28 @@ class Grid(object):
         lon_center = centroid.coords[0][1]
         map = folium.Map(location=[lat_center, lon_center], zoom_start=13)
 
-        folium.Polygon(locations=vertices, color='black', fill=False, opacity=0.4).add_to(map)
+        folium.Polygon(locations=vertices, color='black', fill=False, opacity=0.6).add_to(map)
         
         for dots, color in zip(points, colors):
             dots = self.repoint(dots)
-            cmap = self.cmap(intersection, dots)
-            self.paint(intersection, cmap, color, map)
+            cmap, cmap2 = self.cmap(intersection, dots)
+            self.paint(intersection, cmap, cmap2, color, map)
 
         return map.show_in_browser()
     
-    def paint(self, intersection: list, cmap: dict, color: str, m: folium.Map):
+    def paint(self, intersection: list, cmap: dict, cmap2: dict, color: str, m: folium.Map):
+        utm_proj = pyproj.Proj(proj='utm', zone=20, south=False)
+
         for ii, domain in enumerate(intersection):
             if cmap[ii] > 0.0:
-                folium.Polygon(locations=domain, color='white', fill=True, fill_color=color, opacity=0.4, fill_opacity=cmap[ii]).add_to(m)
+                coords_m = [utm_proj(long, lat) for lat, long in domain]
+                coords_m = Polygon(coords_m)
+                area = round(coords_m.area / 10000, 3)
+
+                polygon = folium.Polygon(locations=domain, color='white', fill=True, fill_color=color, opacity=0.4, fill_opacity=cmap[ii])
+                popup = folium.Popup(f'Area: {area} ha <br> Time: {cmap2[ii]}%', max_width=400)
+                polygon.add_child(popup)
+                m.add_child(polygon)
     
 token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELWIyMWIzMzhhOTkxNmY4YzJlMjI5Y2UxZTdmNjE0ZTE5IiwiZXhwIjoxNjg0Njk4ODQ4LCJ2IjoxNTY1LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjEyfQ.l2VXXMo94tKOsq195agpqUPwrq724kYn82AHvM-g2cE'
 G = Grid(token)
