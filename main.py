@@ -89,8 +89,16 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
            f'Días de pastoreo estimados con el 50% de forraje consumido': time_50,
            f'Días de pastoreo estimados con el 80% de forraje consumido': time_20}
     
-    global biomasa_lote
-    biomasa_lote = biomass 
+    global biomasa_lote, id_lote, name_lote, name_campo, area_lote, name_cultivo, indice_green
+    biomasa_lote = biomass
+    id_lote = Id_lote
+    name_lote = name_field
+    name_campo = name_farm 
+    area_lote = round(area, 3)
+    name_cultivo = cultivo
+    indice_green = df_ndvi['ndvi_mean'][0]
+
+
 
     return {"Información del lote": ans}
 
@@ -98,7 +106,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
 @app.get('/Cantidad de animales ideales', description= 'Ingrese por favor la cantidad de días en los que pretende dejar el ganado en el lote anteriormente consultado.')
 async def Ideal_de_animales(dias: int):
 
-    global biomasa_lote
+    global biomasa_lote, id_lote, name_lote, name_campo, area_lote, name_cultivo, indice_green
 
     time_per_ration = dias * 15 
 
@@ -111,7 +119,13 @@ async def Ideal_de_animales(dias: int):
 
     water = animals * 100
 
-    ans = { 'Biomasa del lote en kg': biomasa_lote,
+    ans = { 'Id_lote': id_lote,
+            'Nombre del lote': name_lote, 
+            'Campo al que pertenece': name_campo,
+            'Área en hectáreas': area_lote, 
+            'Tipo de cultivo': name_cultivo,
+            'NDVI': indice_green, 
+            'Biomasa del lote en kg': biomasa_lote,
             f'Cantidad de animales ideales': animals,
             'Total de agua por día en litros': water,
             f'Cantidad de animales ideales con el 20% consumido': animals_80,
