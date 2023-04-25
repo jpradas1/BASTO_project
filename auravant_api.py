@@ -111,7 +111,8 @@ class Auravant_API(object):
             }
         
         post = requests.post(self.url+'agregarlote', headers=self._headers(), data=data)
-        return post.text
+        response = json.loads(post.text)
+        return response
     
     def add_field(self, id_farm: str, name_field: str, polygon: str):
         id_farm = int(id_farm)
@@ -122,29 +123,9 @@ class Auravant_API(object):
         }
 
         add = requests.post(self.url+'agregarlote', headers=self._headers(), data=data)
-        return add.text
+        response = json.loads(add.text)
+        return response
     
     def delete_field(self, id_field: str):
         delete = requests.get(self.url+'borrarlotes?lote='+id_field, headers=self._headers())
         return delete.text
-
-        
-
-
-
-# url = 'https://api.auravant.com/api/'
-
-# token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELTc2MmYzOTBmYTExYmIwYTlkYmI1OWRhZjJmMDUyNTU3IiwiZXhwIjoxNjgzODgzMDk2LCJ2IjoxNTQ2LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjA4fQ.uBjwDPApnEimVmgpa3Ky0BlhYK7BaOgqurqTpUV4cSA'
-
-# polygon = "POLYGON((-59.9799656867981 -35.8329711461622,-59.9799656867981 -35.8241463744063,-59.9682283401489 -35.8241463744063,-59.9682283401489 -35.8329711461622,-59.9799656867981 -35.8329711461622))"
-# A = Auravant_API(token)
-# print(A.get_max_vegetation())
-# print(A.get_farms())
-# print(A.get_all_fields())
-# print(A.get_fields('124923'))
-# print(A.get_fields('124935'))
-# print(A.get_NDVI('417283', '2022-01-01', '2022-10-01'))
-# print(A.get_NDVI('417283', latest=True))
-# print(A.create_farm('my_field3', 'my_batch1', polygon))
-# print(A.delete_field('418238'))
-# print(A.add_field('124935', 'batch2', polygon))
