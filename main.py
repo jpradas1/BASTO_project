@@ -112,10 +112,10 @@ async def Ideal_de_animales(dias: int):
     water = animals * 100
 
     ans = { 'Biomasa del lote en kg': biomasa_lote,
-            f'Cantidad de animales ideales para {dias} días de pastoreo': animals,
+            f'Cantidad de animales ideales': animals,
             'Total de agua por día en litros': water,
-            f'Cantidad de animales ideales para {dias} días de pastoreo con el 20% consumido': animals_80,
-            f'Cantidad de animales ideales para {dias} días de pastoreo con el 50% consumido': animals_50,
-            f'Cantidad de animales ideales para {dias} días de pastoreo con el 80% consumido': animals_20} 
+            f'Cantidad de animales ideales con el 20% consumido': animals_80,
+            f'Cantidad de animales ideales con el 50% consumido': animals_50,
+            f'Cantidad de animales ideales con el 80% consumido': animals_20} 
 
     return ans
