@@ -119,7 +119,7 @@ class Grid(object):
     def paint(self, intersection: list, cmap: dict, color: str, m: folium.Map):
         for ii, domain in enumerate(intersection):
             if cmap[ii] > 0.0:
-                folium.Polygon(locations=domain, color='black', fill=True, fill_color=color, opacity=0.4, fill_opacity=cmap[ii]).add_to(m)
+                folium.Polygon(locations=domain, color='white', fill=True, fill_color=color, opacity=0.4, fill_opacity=cmap[ii]).add_to(m)
     
 token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELWIyMWIzMzhhOTkxNmY4YzJlMjI5Y2UxZTdmNjE0ZTE5IiwiZXhwIjoxNjg0Njk4ODQ4LCJ2IjoxNTY1LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjEyfQ.l2VXXMo94tKOsq195agpqUPwrq724kYn82AHvM-g2cE'
 G = Grid(token)
