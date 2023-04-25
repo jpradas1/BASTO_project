@@ -8,7 +8,6 @@ from auravant_api import Auravant_API
 
 class Grid(object):
     A = 0
-    map = 0
 
     def __init__(self, token):
         self.token = token
@@ -81,46 +80,46 @@ class Grid(object):
             this_points.append(Point(lat, lng))
         return this_points
     
-    def heat_map(self, id_field: str, points: dict, color: str):
-        points = self.repoint(points)
-        intersection, vertices = self.grid(id_field)
-        polygon = Polygon(vertices)
-
-        cmap = {}
+    def cmap(self, intersection: list, points: list):
+        this_cmap = {}
         for ii, inter in enumerate(intersection):
             inter = Polygon(inter)
-            cmap[ii] = 0
+            this_cmap[ii] = 0
             for dot in points:
                 if inter.contains(dot):
-                    cmap[ii] += 1
+                    this_cmap[ii] += 1
 
-        cmin = min(cmap.values())
-        cmax = max(cmap.values())
+        cmin = min(this_cmap.values())
+        cmax = max(this_cmap.values())
 
-        for k, v in cmap.items():
-            cmap[k] = round((v - cmin) / (cmax - cmin), 2)
+        for k, v in this_cmap.items():
+            this_cmap[k] = round((v - cmin) / (cmax - cmin), 2)
+
+        return this_cmap
+    
+    def heat_map(self, id_field: str, points: list, colors: list):
+        # points = [self.repoint(p) for p in points]
+        intersection, vertices = self.grid(id_field)
+        polygon = Polygon(vertices)
         
         centroid = polygon.centroid
         lat_center = centroid.coords[0][0]
         lon_center = centroid.coords[0][1]
-        self.map = folium.Map(location=[lat_center, lon_center], zoom_start=13)
+        map = folium.Map(location=[lat_center, lon_center], zoom_start=13)
 
-        folium.Polygon(locations=vertices, color='black', fill=False, opacity=0.4).add_to(self.map)
-
-        for ii, domain in enumerate(intersection):
-            if cmap[ii] == 0.0:
-                folium.Polygon(locations=domain, color='black', fill=False, opacity=0.4).add_to(self.map)
-            else:
-                folium.Polygon(locations=domain, color='black', fill=True, fill_color=color, opacity=0.4, fill_opacity=cmap[ii]).add_to(self.map)
-
-        return self.map.show_in_browser()
-    
-    def merge_map(self, id_field: str, points: list, colors: list):
+        folium.Polygon(locations=vertices, color='black', fill=False, opacity=0.4).add_to(map)
         
-        for po, co in zip(points, colors):
-            self.heat_map(id_field, po, colors)
+        for dots, color in zip(points, colors):
+            dots = self.repoint(dots)
+            cmap = self.cmap(intersection, dots)
+            self.paint(intersection, cmap, color, map)
 
-        return self.map.show_in_browser()
+        return map.show_in_browser()
+    
+    def paint(self, intersection: list, cmap: dict, color: str, m: folium.Map):
+        for ii, domain in enumerate(intersection):
+            if cmap[ii] > 0.0:
+                folium.Polygon(locations=domain, color='black', fill=True, fill_color=color, opacity=0.4, fill_opacity=cmap[ii]).add_to(m)
     
 token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELWIyMWIzMzhhOTkxNmY4YzJlMjI5Y2UxZTdmNjE0ZTE5IiwiZXhwIjoxNjg0Njk4ODQ4LCJ2IjoxNTY1LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjEyfQ.l2VXXMo94tKOsq195agpqUPwrq724kYn82AHvM-g2cE'
 G = Grid(token)
@@ -228,5 +227,55 @@ points2 = {'lat': [-31.244103842890247,
   -59.50158382860524,
   -59.502230363163775]}
 
-# G.merge_map(id_field='423174', points=[points1, points2], colors=['blue', 'green'])
-G.heat_map(id_field='423174', points=points1, color='green')
+points3 = {'lat': [-31.246785354611184,
+  -31.246875239437834,
+  -31.245735245528117,
+  -31.246953782422242,
+  -31.24445879224608,
+  -31.24410669194387,
+  -31.245495262866612,
+  -31.24287505508327,
+  -31.245560927678397,
+  -31.24694046998633,
+  -31.246151931265146,
+  -31.245954354135257,
+  -31.24263846964488,
+  -31.24556320397498,
+  -31.243200051529143,
+  -31.24428029020583,
+  -31.2461996339978,
+  -31.244145840525746,
+  -31.24486358330572,
+  -31.24262630043058,
+  -31.244836914206175,
+  -31.245538069576433,
+  -31.246489789425603,
+  -31.24541113846453,
+  -31.24495179001191],
+ 'long': [-59.51162912521644,
+  -59.5129901708038,
+  -59.51601143443255,
+  -59.51468217183436,
+  -59.51387255391827,
+  -59.51487846591154,
+  -59.516265078717296,
+  -59.51212813632807,
+  -59.51561648657321,
+  -59.51578277044295,
+  -59.5143797318939,
+  -59.5141859783406,
+  -59.51386347464333,
+  -59.515475330256535,
+  -59.514985651460286,
+  -59.51258490708861,
+  -59.51465582642974,
+  -59.51547660783963,
+  -59.51528255858461,
+  -59.51454270999768,
+  -59.513449542269605,
+  -59.51382026912091,
+  -59.514243771675886,
+  -59.513824092306386,
+  -59.51357049048442]}
+
+G.heat_map(id_field='423174', points=[points1, points2, points3], colors=['green', 'blue', 'red'])
