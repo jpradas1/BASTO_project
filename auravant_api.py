@@ -3,9 +3,23 @@ import json
 import pandas as pd
 import os
 
+'''
+This script provides methods intercting with the Auravant's API:
+    https://developers.auravant.com/docs/apis/reference/api_ref_gral/
+
+It establishes conexions with this API, where it gets information about farms, thier fields,
+and more informatecion related. Moreover, it is possible to set posts and deletes, namely, it 
+performs CRUD activities on farms and fields.
+'''
+
 class Auravant_API(object):
     url = 'https://api.auravant.com/api/'
 
+    '''
+    This object receives a paramater named as "token", which allows to log in user account
+    (For more information about it, read README.md file). Thus using that token it is created
+    a header method to reach api through other method '_get_info'. 
+    '''
     def __init__(self, token: str):
          self.token = token
     
@@ -20,16 +34,23 @@ class Auravant_API(object):
         response = json.loads(request.text)
         return response['user']
     
+    '''
+    Once the conexion has been made, it extracts farms and fields owned by the user. These come
+    with their dimensions ('area', 'POLYGON' and 'bbox').
+    '''
+    
     def get_farms(self):
         farms = self._get_info()['farms']
         id_farms = [x for x in farms.keys()]
         names = [farms[x]['name'] for x in id_farms]
+        polygon = [farms[x]['polygon'] for x in id_farms]
         bbox = [farms[x]['bbox'] for x in id_farms]
         L = lambda x: len([x for x in farms[x]['fields']])
         number = [L(x) for x in id_farms]
 
         df = pd.DataFrame({'id_farm': id_farms, 'name': names,
-                            'polygon': bbox, 'N_fields': number})
+                            'polygon': polygon, 'bbox': bbox,
+                            'N_fields': number})
         
         return df
     
@@ -63,19 +84,11 @@ class Auravant_API(object):
 
         return df
     
-    def get_max_vegetation(self):
-        file = './dataset/All_Harvest.csv'
-        if os.path.exists(file):
-            df = pd.read_csv(file).set_index('Fecha')
-            crops = df.columns
-            maxx = [df[c].max() for c in crops]
-            df_max = pd.DataFrame({'Vegetation': crops, 'Max_Biomass': maxx})
-            return df_max
-        
-        print("There's no file './dataset/All_Harvest.csv'. \n \
-                In order to build this file, please run\n \
-                python3 tcf_scraping.py")
-
+    '''
+    Every field has information about its historical record of NDVI (Normalized Difference
+    Vegetation Index) from 2016. The method 'get_NDVI' brings in it, and gives the posibility
+    to get only the earliest NDVI value.
+    '''
 
     def get_NDVI(self, id_field: str, date_from = None, date_to = None, latest = False):
 
@@ -104,6 +117,30 @@ class Auravant_API(object):
             return df.iloc[0,:].values
 
         return df
+    
+    '''
+    The method 'get_max_vegetation' does not perform any conextion to the API. Instead it creates
+    a DataFrame about maximum values for each sort of vegetation present in csv file
+    './dataset/All_Harvest.csv'. This file is created by the script 'tcf_scraping.py'.
+    '''
+    
+    def get_max_vegetation(self):
+        file = './dataset/All_Harvest.csv'
+        if os.path.exists(file):
+            df = pd.read_csv(file).set_index('Fecha')
+            crops = df.columns
+            maxx = [df[c].max() for c in crops]
+            df_max = pd.DataFrame({'Vegetation': crops, 'Max_Biomass': maxx})
+            return df_max
+        
+        print("There's no file './dataset/All_Harvest.csv'. \n \
+                In order to build this file, please run\n \
+                python3 tcf_scraping.py")
+        
+    '''
+    Finally, it is possible create farms and fields. Conventionally, fields are into farms. So
+    fields can be added to farms. Moreover, to delete a field just use its id_field.
+    '''
     
     def create_farm(self, name_farm: str, name_field: str, polygon: str):
         data = {

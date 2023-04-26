@@ -119,7 +119,7 @@ class Grid(object):
             cmap, cmap2 = self.cmap(intersection, dots)
             self.paint(intersection, cmap, cmap2, color, map)
 
-        return map.show_in_browser()
+        return map#.show_in_browser()
     
     def paint(self, intersection: list, cmap: dict, cmap2: dict, color: str, m: folium.Map):
         utm_proj = pyproj.Proj(proj='utm', zone=20, south=False)
@@ -292,4 +292,4 @@ points3 = {'lat': [-31.246785354611184,
   -59.513824092306386,
   -59.51357049048442]}
 
-G.heat_map(id_field='423174', points=[points1, points2, points3], colors=['green', 'blue', 'red'])
+# G.heat_map(id_field='423174', points=[points1, points2, points3], colors=['green', 'blue', 'red'])
