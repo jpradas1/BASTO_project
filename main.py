@@ -59,6 +59,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
     total_ration = Cow_number * 15 
     df_ndvi['biomass_mean'] = round((df_ndvi['ndvi_mean'] * Biomasa_max) * area, 1)
     biomass = df_ndvi['biomass_mean'].values[0]
+    ndvi = round(df_ndvi['ndvi_mean'][0], 2)
     
     time = round(biomass / total_ration)
 
@@ -83,7 +84,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
            'Total de agua por día en litros': water,
            'Total de agua para los días de pastoreo estimados': total_water,
            'Biomasa del lote en kg': biomass,
-           'NDVI': df_ndvi['ndvi_mean'][0], 
+           'NDVI': ndvi, 
            'Días de pastoreo estimados': time,
            f'Días de pastoreo estimados con el 20% de forraje consumido': time_80,
            f'Días de pastoreo estimados con el 50% de forraje consumido': time_50,
@@ -96,7 +97,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
     name_campo = name_farm 
     area_lote = round(area, 3)
     name_cultivo = cultivo
-    indice_green = df_ndvi['ndvi_mean'][0]
+    indice_green = ndvi
 
 
 
