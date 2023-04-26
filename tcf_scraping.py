@@ -118,7 +118,7 @@ class TCF_Scraping(object):
         self._custom_name(year, region)
 
     '''
-    'developmen' method goes until the section of tables to download them.
+    'development' method goes until the section of tables to download them.
     '''
 
     def development(self):
@@ -150,7 +150,7 @@ class TCF_Scraping(object):
         self.zones = zones
 
     '''
-    Finally, for each year ('Año') and region ('Zone') tables are updated and saved as csv format.
+    Finally, for each year ('Año') and region ('Zona') the tables are updated and saved as csv format.
     '''
     
     def downloading(self):
