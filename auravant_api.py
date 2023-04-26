@@ -43,14 +43,12 @@ class Auravant_API(object):
         farms = self._get_info()['farms']
         id_farms = [x for x in farms.keys()]
         names = [farms[x]['name'] for x in id_farms]
-        polygon = [farms[x]['polygon'] for x in id_farms]
         bbox = [farms[x]['bbox'] for x in id_farms]
         L = lambda x: len([x for x in farms[x]['fields']])
         number = [L(x) for x in id_farms]
 
         df = pd.DataFrame({'id_farm': id_farms, 'name': names,
-                            'polygon': polygon, 'bbox': bbox,
-                            'N_fields': number})
+                            'bbox': bbox, 'N_fields': number})
         
         return df
     
@@ -58,11 +56,12 @@ class Auravant_API(object):
         fields = self._get_info()['farms'][id_farm]['fields']
         id_fields = [x for x in fields.keys()]
         names = [fields[x]['name'] for x in id_fields]
-        bbox = [fields[x]['shapes']['current']['polygon'] for x in id_fields]
+        bbox = [fields[x]['shapes']['current']['bbox'] for x in id_fields]
+        polygon = [fields[x]['shapes']['current']['polygon'] for x in id_fields]
         areas = [fields[x]['shapes']['current']['area'] for x in id_fields]
 
         df = pd.DataFrame({'id_field': id_fields, 'name': names, 'area': areas,
-                            'polygon': bbox})
+                            'polygon': polygon, 'bbox': bbox})
         
         return df
     
