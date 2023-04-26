@@ -6,14 +6,31 @@ import time, os, shutil
 import pandas as pd
 from datetime import datetime
 import numpy as np
+import sys
 
 import warnings
 warnings.filterwarnings('ignore')
+
+'''
+Because it is needed to extract data from the DataBase page:
+    https://tableroforrajero.crea.org.ar/dashboardcrea2/index.php/crea_session_manager
+and this counts with no API, this script performs automations by scraping on this page and
+download essential data for this project.
+
+To know more about this page, read README.md.
+'''
 
 class TCF_Scraping(object):
     url = 'https://tableroforrajero.crea.org.ar/dashboardcrea2/index.php/crea_session_manager'
     driver = 0
     years, zones = [], []
+
+    '''
+    First, it builds an object which has as parameter the download path for data, this path get had
+    to be the absolute path, namely, it could be '$(pwd)/dataset/'.
+
+    Furthermore, it opens the website via firefox browser as well.
+    '''
 
     def __init__(self, absolute_path: str):
         firefox_profile = webdriver.FirefoxProfile()
@@ -24,6 +41,10 @@ class TCF_Scraping(object):
 
         self.driver = webdriver.Firefox(firefox_profile=firefox_profile)
         self.driver.get(self.url)
+
+    '''
+    The following three basic methods seeks buttoms and clicks on them.
+    '''
     
     def _webd_click(self, by: By, key: str):
         this_click = WebDriverWait(self.driver, 20)\
@@ -37,6 +58,11 @@ class TCF_Scraping(object):
     
     def quit(self):
         self.driver.quit()
+
+    '''
+    When bot reachs the section of tables extract the information of the each selection bar
+    such as 'Año', 'Mes' and 'Zona'.
+    '''
 
     def _select_values(self, by: By, key1: str, key2: str, value: str):
         self._find_element(by, key1).click()
@@ -62,6 +88,11 @@ class TCF_Scraping(object):
     def _update_table(self):
         self._webd_click(By.XPATH, r'/html/body/div/div[2]/form/table/tbody/tr[1]/td[10]/button')
 
+    '''
+    The page has an option to download data as csv format but there's no option to choose the names
+    for downloaded files, so once the file is in the folder 'dataset/' its name is changed.
+    '''
+
     def _custom_name(self, year: str, region: str):
         download_dir = './dataset/'
         region = region.replace('.','').replace('-','').replace(' ','_')
@@ -85,6 +116,10 @@ class TCF_Scraping(object):
             time.sleep(1)
 
         self._custom_name(year, region)
+
+    '''
+    'developmen' method goes until the section of tables to download them.
+    '''
 
     def development(self):
         self._webd_click(By.CSS_SELECTOR, 'a.btn.btn-default')
@@ -113,6 +148,10 @@ class TCF_Scraping(object):
         
         self.years = years
         self.zones = zones
+
+    '''
+    Finally, for each year ('Año') and region ('Zone') tables are updated and saved as csv format.
+    '''
     
     def downloading(self):
         jj = 1
@@ -123,8 +162,6 @@ class TCF_Scraping(object):
                                 r'//*[@id="entity_id_chosen"]',
                                 r'/html/body/div/div[2]/form/table/tbody/tr[3]/td[2]/div/div/ul/li[{}]',
                                 zone)
-            # if jj == 1:
-            #     print(self.years, self.zones)
 
             for year in self.years:
                 time.sleep(2)
@@ -146,8 +183,11 @@ class TCF_Scraping(object):
         self.concat()
         print('Done!!!')
 
+    '''
+    For each file downloaded it is made on them a short ETL to normalize the date format.
+    '''
+
     def ETL(self, region: str):
-        # self.quit()
         region = region.replace('.','').replace('-','').replace(' ','_')
         path = './dataset/' + region + '/'
         file_list, files = os.listdir(path), []
@@ -179,6 +219,10 @@ class TCF_Scraping(object):
         if os.path.exists('./dataset/' + region + '.csv'):
             shutil.rmtree(path)
 
+    '''
+    And it is created a new Dataframe with all data, and every csv file is deleted.
+    '''
+
     def concat(self):
         path = './dataset/'
         file_list = os.listdir(path)[1:]
@@ -195,7 +239,7 @@ class TCF_Scraping(object):
                 os.remove(path + file)
 
 if __name__ == "__main__":
-    path = '/home/uqbar/Desktop/Data-Science/Henry_PF/BASTO-project/dataset/'
+    path = sys.argv[1]
     TCF = TCF_Scraping(path)
     TCF.development()
     TCF.downloading()
