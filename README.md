@@ -1,5 +1,5 @@
 <div id = "header" align = "center">
-  <img = src = "https://github.com/jpradas1/BASTO-project/blob/main/Images/encabezado.jpg" width = "500" />
+  <img = src = "https://github.com/jpradas1/BASTO-project/blob/main/Images/encabezado.jpg" width = "800" />
 </div>
 
 
