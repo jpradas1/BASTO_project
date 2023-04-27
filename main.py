@@ -4,18 +4,21 @@ import requests
 import json
 import pandas as pd
 
+# Iniciar FastAPI. 
 app = FastAPI(title= 'Estimación biomasa disponible.', 
               description= 'Con las imágenes satelitales para obtener el NDVI de un campo, saber cuánto forraje se dispone y por cuánto tiempo, para razas Británicas entre los 450 y 500 kg, en un lote determinado.')
 
+# Leer el csv que se tiene en la carpeta dataset.
 df = pd.read_csv('./dataset/All_Harvest.csv').set_index('Fecha')
 df.dropna(how='all', inplace=True)
 df = pd.DataFrame(df)
 
+# Variables para consumir la API de auravant. 
 url = 'https://api.auravant.com/api/'
 token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzcmMiOiJ3IiwidWlkIjoiVUlELTc2MmYzOTBmYTExYmIwYTlkYmI1OWRhZjJmMDUyNTU3IiwiZXhwIjoxNjgzODgzMDk2LCJ2IjoxNTQ2LCJsb2NhbGUiOiJlbl9VUyIsImRldiI6MjA4fQ.uBjwDPApnEimVmgpa3Ky0BlhYK7BaOgqurqTpUV4cSA'
 A = Auravant_API(token)
 
-
+# Definir la función para obtener los tipos de cultivos.
 @app.get('/Cultivos', description= 'A continuación se va a desplegar una lista de tipos de cultivos, para poder determinar la cantidad de biomasa y días de pastoreo de su lote. Por favor, verifique el número al que corresponde su tipo de cultivo.')
 async def tipos_de_cultivo():
     cultivos = sorted(df.columns.to_list())
@@ -26,7 +29,7 @@ async def tipos_de_cultivo():
         cultivos_dicc.append(salida)
     return cultivos_dicc
 
-
+# Definir la función para obtener los lotes que dispone el usuario.
 @app.get('/Lotes', description= "A continuación se va a desplegar una lista de todos los lotes que usted dispone. Por favor, verifique el número 'id_field' del lote para el análisis.")
 async def Lotes_disponibles():
 
@@ -37,7 +40,7 @@ async def Lotes_disponibles():
 
     return dicc
 
-
+# Definir la función para obtener los datos del lote y la biomasa del mismo.
 @app.get('/Biomasa y Pastoreo', description= 'Introduzca los valores solicitados como números enteros, sin comas, puntos ni espacios.')
 async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_cultivo: int):
 
@@ -52,7 +55,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
     df_ndvi = A.get_NDVI(Id_lote)
 
     name_field = df_field[df_field['id_field'] == Id_lote]['name'].values[0]
-    name_farm = df_farm[df_farm['id_farm'] == df_field[df_field['id_field'] == '417283']['id_farm'].values[0]]['name'].values[0]
+    name_farm = df_farm[df_farm['id_farm'] == df_field[df_field['id_field'] == str(Id_lote)]['id_farm'].values[0]]['name'].values[0]
     area = df_field.loc[df_field['id_field'] == str(Id_lote)]['area'].values[0]
     Biomasa_max = df[cultivo].max()
 
@@ -90,7 +93,7 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
            f'Días de pastoreo estimados con el 50% de forraje consumido': time_50,
            f'Días de pastoreo estimados con el 80% de forraje consumido': time_20}
     
-    global biomasa_lote, id_lote, name_lote, name_campo, area_lote, name_cultivo, indice_green
+    global biomasa_lote, id_lote, name_lote, name_campo, area_lote, name_cultivo, indice_green # Permitir usar las variables de la función, en otra función.
     biomasa_lote = biomass
     id_lote = Id_lote
     name_lote = name_field
@@ -103,11 +106,11 @@ async def Biomasa_y_Pastoreo_por_campo(Id_lote: str, Cow_number: int, Type_culti
 
     return {"Información del lote": ans}
 
-
+# Definir la función para que el usuario ingrese la cantidad de días en los que decida rotar el ganado.
 @app.get('/Cantidad de animales ideales', description= 'Ingrese por favor la cantidad de días en los que pretende dejar el ganado en el lote anteriormente consultado.')
 async def Ideal_de_animales(dias: int):
 
-    global biomasa_lote, id_lote, name_lote, name_campo, area_lote, name_cultivo, indice_green
+    global biomasa_lote, id_lote, name_lote, name_campo, area_lote, name_cultivo, indice_green # Llamar las variables de funciones anteriores. 
 
     time_per_ration = dias * 15 
 
