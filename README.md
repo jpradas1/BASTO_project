@@ -24,7 +24,7 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
 * Obtener información de las bases de datos ofrecidas por la empresa
 * Obtener imágenes satelitales necesarias y utilizar el NDVI para estimar la biomasa disponible en el lote.
 * Determinar la biomasa consumida y la biomasa remanente en la zona de pastoreo.
-* Crear una API que brinde la cantidad días de alimento disponible a partir de parámetros ingresados por el usuario.
+* Crear una [API](https://fastapi-basto-project.onrender.com/docs) que brinde la cantidad días de alimento disponible a partir de parámetros ingresados por el usuario.
 
 **Del equipo:**
 * Trabajar en conjunto para analizar los datos y obtener información útil.
@@ -60,8 +60,8 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
 * **Data Scientist**: Gutierrez Mas, Gabriel Hernán; Hoyos Hoyos, Pedro
 
 ---
-<h3> Herramientas usadas: </h3>
-<div>
+<div id = "header" align = "center">
+    <h1 align = 'Center'> Stack tecnológico </>
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/slack/slack-original.svg' title = 'Slack' alt = 'Slack' width = '40' height = '40' />&nbsp;
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/google/google-original.svg' title = 'Google' alt = 'Google' width = '40' height = '40'/>&nbsp;
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original-wordmark.svg' title = 'VSC' alt = 'VSC' width = '40' height = '40' />&nbsp;
@@ -70,5 +70,6 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/fastapi/fastapi-original.svg' title = 'fastAPI' alt = 'fastAPI' width = '40' height = '40' />&nbsp;
    <img src = 'https://res.cloudinary.com/practicaldev/image/fetch/s--iWNIikKc--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u6kmbieir6su8dt70z3l.png' title = 'Render' alt = 'Render' width = '40' height = '40' />&nbsp;
     <img src = 'https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg' title = 'Github' alt = 'Github' width = '40' height = '40' />&nbsp;
-  
+
+</div>
 ---
