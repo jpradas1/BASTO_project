@@ -2,14 +2,14 @@
 
 # **Bastó Project - Team N°3**
 ______
-Somos un grupo de Data Scientists e ingresamos en el programa *Henry Projects*, se trata de una iniciativa para que los estudiantes de Henry, en su etapa de proyecto final, tengan la oportunidad de realizar proyectos reales. En nuestro caso nos incorporaramos a la empresa *Bastó Ganado Inteligente*, y por un mes trabajamos en un entorno real.
+Somos un grupo de Data Scientists que hemos participado en el programa Henry Projects. Durante un mes, hemos trabajado en colaboración con el equipo de Bastó Ganado Inteligente para desarrollar soluciones basadas en datos que mejoren la gestión del ganado y el pastoreo. Estamos entusiasmados por el impacto que nuestras soluciones pueden tener en la industria ganadera.
 ______
 
 ## **Hablemos de Bastó**
 
-Bastó es un sistema basado en IOT (Internet de las cosas) que, a través de caravanas inteligentes, gestiona una cerca virtual dinámica que monitorea de forma constante la ubicación, salud y bienestar del ganado, posibilitando un pastoreo de precisión.
+"Bastó" es sistema basado en IoT (Internet de las cosas) que utiliza caravanas inteligentes para implementar una cerca virtual dinámica, la cual monitorea de manera constante la ubicación, salud y bienestar del ganado, permitiendo así un pastoreo de precisión.
 
-Bastó propone subdividir grandes potreros en lotes más pequeños para lograr una producción más intensiva y un eficiente uso de las pasturas, a través de cercas virtuales controlando al ganado con dispositivos inteligentes que los monitorea, contiene y arrea, gestionando un pastoreo de precisión. Esto es posible ya que se evitaría el alto costo de infraestructura, mano de obra, y tiempo.
+La empresa propone una solución para mejorar la producción y el uso de pasturas en grandes potreros, mediante la subdivisión de estos en lotes más pequeños y el control del ganado a través de cercas virtuales y dispositivos inteligentes que monitorean, contienen y dirigen al ganado, optimizando el pastoreo de manera eficiente. Esta tecnología permite reducir costos de infraestructura, mano de obra y tiempo, al tiempo que se mejora la calidad del pastoreo y se aumenta la productividad.
 
 ## **El proyecto**
 
