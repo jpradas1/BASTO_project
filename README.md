@@ -60,7 +60,7 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
 ## **Roles y responsabilidades**
 * **Data Engineers**: Prada Sierra, Juan Camilo; Martinez Torres, Carlos Santiago
 * **Data Analyst**: Zarich Santi, Daniela Emilia
-* **Data Scientist**: Gutierrez Mas, Gabriel Hernán; Hoyos Hoyos, Pedro
+* **Data Scientist**: Gutierrez Mas, Gabriel Hernán
 
 ---
 <div id = "header" align = "center">
