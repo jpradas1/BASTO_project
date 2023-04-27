@@ -72,8 +72,8 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
    <img src = 'https://github.com/smartinez24/devicons/blob/master/icons/linux/linux-original.svg' title = 'Linux' alt = 'Linux' width = '40' height = '40' />&nbsp;
    <img src = 'https://github.com/smartinez24/devicons/blob/master/icons/mongodb/mongodb-original-wordmark.svg' title = 'MongoDB' alt = 'MongoDB' width = '40' height = '40' />&nbsp;
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg' title = 'Python' alt = 'Python' width = '40' height = '40' />&nbsp;
-   <img src = 'https://github.com/devicons/devicon/blob/master/icons/fastapi/fastapi-original.svg' title = 'fastAPI' alt = 'fastAPI' width = '40' height = '40' />&nbsp;
+   <img src = 'https://github.com/devicons/devicon/blob/master/icons/fastapi/fastapi-original.svg' title = 'FastAPI' alt = 'FastAPI' width = '40' height = '40' />&nbsp;
    <img src = 'https://res.cloudinary.com/practicaldev/image/fetch/s--iWNIikKc--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u6kmbieir6su8dt70z3l.png' title = 'Render' alt = 'Render' width = '40' height = '40' />&nbsp;
-    <img src = 'https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg' title = 'Github' alt = 'Github' width = '40' height = '40' />&nbsp;
+    <img src = 'https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg' title = 'GitHub' alt = 'GitHub' width = '40' height = '40' />&nbsp;
 
 </div>
