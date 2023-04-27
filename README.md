@@ -54,29 +54,21 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
 * Consumo óptimo: Mantener la biomasa remanente en valores cercanos a 0 luego de terminado el plazo estimado por el modelo.
 * Tamaño de rodeo: Establecer qué cantidad de bovinos es ideal poner en un lote de acuerdo a la cantidad de forraje y un tiempo determinado.
 
-## **Stack tecnológico**
-* Visual Studio Code
-* Python
-* MongoDB Compass
-* Postman
-* Trello
-* PowerBI
-* Fast API
-* Render
-* Github
-* Genially
-* Google Drive
-* Slack
-* Google Meet
-
-## **Metodología de trabajo**
-* Establecer reuniones diarias con el equipo
-* Dividir tareas en base a los roles establecidos
-* Socializar avances en la investigación
-* Buscar/complementar investigación con personas pertinentes/especialistas al tema
-
 ## **Roles y responsabilidades**
 * **Data Engineers**: Prada Sierra, Juan Camilo; Martinez Torres, Carlos Santiago
 * **Data Analyst**: Zarich Santi, Daniela Emilia
 * **Data Scientist**: Gutierrez Mas, Gabriel Hernán; Hoyos Hoyos, Pedro
 
+---
+<h3> Herramientas usadas: </h3>
+<div>
+   <img src = 'https://github.com/devicons/devicon/blob/master/icons/slack/slack-original.svg' title = 'Slack' alt = 'Slack' width = '40' height = '40' />&nbsp;
+   <img src = 'https://github.com/devicons/devicon/blob/master/icons/google/google-original.svg' title = 'Google' alt = 'Google' width = '40' height = '40'/>&nbsp;
+   <img src = 'https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original-wordmark.svg' title = 'VSC' alt = 'VSC' width = '40' height = '40' />&nbsp;
+   <img src = 'https://github.com/devicons/devicon/blob/master/icons/windows8/windows8-original.svg' title = 'Windows' alt = 'Windows' width = '40' height = '40' />&nbsp;
+   <img src = 'https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg' title = 'Python' alt = 'Python' width = '40' height = '40' />&nbsp;
+   <img src = 'https://github.com/devicons/devicon/blob/master/icons/fastapi/fastapi-original.svg' title = 'fastAPI' alt = 'fastAPI' width = '40' height = '40' />&nbsp;
+   <img src = 'https://res.cloudinary.com/practicaldev/image/fetch/s--iWNIikKc--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u6kmbieir6su8dt70z3l.png' title = 'Render' alt = 'Render' width = '40' height = '40' />&nbsp;
+    <img src = 'https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg' title = 'Github' alt = 'Github' width = '40' height = '40' />&nbsp;
+  
+---
