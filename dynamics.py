@@ -10,7 +10,9 @@ class HeatMap(object):
     plots, heads = 0, 0
     gps_path, plot_path = 0, 0
 
-    def __init__(self, farm: str):
+    def __init__(self, farm: str, density: float):
+        self.square_size = density
+
         self.farm = farm.replace(' ', '_')
         self.gps_path = './basto_dataset/gps_' + self.farm + '/'
         self.plot_path = './basto_dataset/plots/'
@@ -62,7 +64,7 @@ class HeatMap(object):
         field = Polygon(polygon)
         square = field.envelope
         # Define the size of the smaller squares
-        square_size = 0.003
+        # self.square_size = 0.003
         # Divide the square into smaller squares
         minx, miny, maxx, maxy = square.bounds
 
@@ -74,15 +76,15 @@ class HeatMap(object):
             y = miny
             while y < maxy:
                 small_square_coords = [(x, y),
-                                    (x + square_size, y),
-                                    (x + square_size, y + square_size),
-                                    (x, y + square_size),
+                                    (x + self.square_size, y),
+                                    (x + self.square_size, y + self.square_size),
+                                    (x, y + self.square_size),
                                     (x, y)]
                 small_square = Polygon(small_square_coords)
                 if small_square.intersects(square):
                     small_squares.append(small_square_coords)
-                y += square_size
-            x += square_size
+                y += self.square_size
+            x += self.square_size
 
         intersection = []
         for sq in small_squares:
@@ -131,7 +133,7 @@ class HeatMap(object):
 
         return this_cmap, this_cmap2
     
-    def heat_map(self, from_date: str, to_date: str):
+    def heat_map(self, from_date: datetime, to_date: datetime):
         vertices = self.minimum_regions()
         intersection = []
         for minn in vertices:
@@ -149,9 +151,9 @@ class HeatMap(object):
         map = folium.Map(location=[lat_center, lon_center], zoom_start=13)
 
         # points = self.repoint(from_date, to_date)
-        date1 = datetime.strptime(from_date, '%Y-%m-%d')
-        date2 = datetime.strptime(to_date, '%Y-%m-%d')
-        delta = date2 - date1
+        # date1 = datetime.strptime(from_date, '%Y-%m-%d')
+        # date2 = datetime.strptime(to_date, '%Y-%m-%d')
+        delta = to_date - from_date
         num_days = delta.days
 
         points = self.test_points(multipolygon, num_days)
@@ -208,11 +210,3 @@ class HeatMap(object):
             points.append(new_points)
         
         return points
-
-# farm = 'MACSA'
-# HM = HeatMap(farm)
-# print(HM.grid(key='0'))
-# HM.heat_map(date='2022-08-17')
-# HM.heat_map(from_date='2023-03-29', to_date='2023-03-30').show_in_browser()
-# print(HM.heat_map(from_date='2023-03-29', to_date='2023-03-30'))
-# print(HM.minimum_regions())
