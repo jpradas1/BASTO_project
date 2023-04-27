@@ -1,3 +1,10 @@
+<div id = "header" align = "center">
+  <img = src = "https://github.com/jpradas1/BASTO-project/blob/main/Images/encabezado.jpg" width = "500" />
+    <h1 align = 'Center'> ¡Bienvenido a mi primer proyecto como Data engineer! </>
+    <h2 align = 'Center'> ETL(Extract, Transform and Load), EDA(Exploratory Data Analysis) y ML(Machine Learning).
+    </2>
+</div>
+
 ![Encabezado](https://github.com/jpradas1/BASTO-project/blob/main/Images/encabezado.jpg)
 
 # **Bastó Project - Team N°3**
