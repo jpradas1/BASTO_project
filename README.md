@@ -66,6 +66,7 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
 <div id = "header" align = "center">
   <h1 align = 'Center'> Stack tecnológico </h1>
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/slack/slack-original.svg' title = 'Slack' alt = 'Slack' width = '40' height = '40' />&nbsp;
+   <img src = 'https://github.com/smartinez24/devicons/blob/master/icons/trello/trello-plain.svg' title = 'Trello' alt = 'Trello' width = '40' height = '40' />&nbsp;
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/google/google-original.svg' title = 'Google' alt = 'Google' width = '40' height = '40'/>&nbsp;
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original-wordmark.svg' title = 'VSC' alt = 'VSC' width = '40' height = '40' />&nbsp;
    <img src = 'https://github.com/devicons/devicon/blob/master/icons/windows8/windows8-original.svg' title = 'Windows' alt = 'Windows' width = '40' height = '40' />&nbsp;
