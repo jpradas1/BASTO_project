@@ -1,11 +1,14 @@
 import streamlit as st
-# import folium
 from streamlit_folium import folium_static
-from dynamics import Grid
-from dynamics import token, points1, points2, points3
+from dynamics import HeatMap
 
-G = Grid(token)
-m = G.heat_map(id_field='423168', points=[points1, points2, points3], colors=['green', 'blue', 'red'])
+farm = 'MACSA'
 
-st.title("My Folium Map")
+from_date = '2023-03-29'
+to_date = '2023-03-30'
+
+HHM = HeatMap(farm)
+m = HHM.heat_map(from_date, to_date)
+
+st.title("Dinámicas de Pastoreo: Mapa de Calor")
 folium_static(m)

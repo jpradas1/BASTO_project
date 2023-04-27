@@ -1,8 +1,10 @@
 from shapely.geometry import Polygon, Point, MultiPolygon
 import folium
 import pyproj
-import json, os
+import json, os, random
 import pandas as pd
+import numpy as np
+from datetime import datetime
 
 class HeatMap(object):
     plots, heads = 0, 0
@@ -60,7 +62,7 @@ class HeatMap(object):
         field = Polygon(polygon)
         square = field.envelope
         # Define the size of the smaller squares
-        square_size = 0.001
+        square_size = 0.003
         # Divide the square into smaller squares
         minx, miny, maxx, maxy = square.bounds
 
@@ -95,38 +97,39 @@ class HeatMap(object):
 
         return intersection
     
-    def repoint(self, date: str):
+    def repoint(self, from_date: str, to_date: str):
         position = []
         for points in self.heads:
             this_point = []
-            df = points.loc[points['timestamp'].dt.date == pd.to_datetime(date).date()]
+            df = points.loc[(points['timestamp'].dt.date >= pd.to_datetime(from_date).date()) & \
+                            (points['timestamp'].dt.date <= pd.to_datetime(to_date).date())]
             for lat, lng in zip(df['lat'].values, df['lng'].values):
                 this_point.append(Point(lat, lng))
             position.append(this_point)
         position = [p for pp in position for p in pp]
         return position
     
-    # def cmap(self, intersection: list, points: list):
-    #     this_cmap, this_cmap2 = {}, {}
-    #     for ii, inter in enumerate(intersection):
-    #         inter = Polygon(inter)
-    #         this_cmap[ii] = 0
-    #         for dot in points:
-    #             if inter.contains(dot):
-    #                 this_cmap[ii] += 1
+    def cmap(self, intersection: list, points: list):
+        this_cmap, this_cmap2 = {}, {}
+        for ii, inter in enumerate(intersection):
+            inter = Polygon(inter)
+            this_cmap[ii] = 0
+            for dot in points:
+                if inter.contains(dot):
+                    this_cmap[ii] += 1
 
-    #     suma = sum([x for x in this_cmap.values()])
+        suma = sum([x for x in this_cmap.values()])
 
-    #     for k, v in this_cmap.items():
-    #         this_cmap2[k] = round(v / suma, 3) * 100
+        for k, v in this_cmap.items():
+            this_cmap2[k] = round(v / suma * 100, 1)
 
-    #     cmin = min(this_cmap.values())
-    #     cmax = max(this_cmap.values())
+        cmin = min(this_cmap.values())
+        cmax = max(this_cmap.values())
 
-    #     for k, v in this_cmap.items():
-    #         this_cmap[k] = round((v - cmin) / (cmax - cmin), 2)
+        for k, v in this_cmap.items():
+            this_cmap[k] = round((v - cmin) / (cmax - cmin), 2)
 
-    #     return this_cmap, this_cmap2
+        return this_cmap, this_cmap2
     
     def heat_map(self, from_date: str, to_date: str):
         vertices = self.minimum_regions()
@@ -145,41 +148,71 @@ class HeatMap(object):
         
         map = folium.Map(location=[lat_center, lon_center], zoom_start=13)
 
-        points = self.repoint(from_date)
-        ver_point = [list(pp.coords) for pp in points]
+        # points = self.repoint(from_date, to_date)
+        date1 = datetime.strptime(from_date, '%Y-%m-%d')
+        date2 = datetime.strptime(to_date, '%Y-%m-%d')
+        delta = date2 - date1
+        num_days = delta.days
 
-        for inter in intersection:
-            folium.Polygon(locations=inter, color='black', fill=True, fill_color='green', opacity=0.4, fill_opacity=0.5).add_to(map)
-
-        for pp in ver_point:
-            # for p in pp:
-            folium.Polygon(locations=pp, color='red', fill=True, fill_color='red', opacity=1, fill_opacity=1).add_to(map)
-        # folium.Polygon(locations=vertices, color='black', fill=False, opacity=0.6).add_to(map)
+        points = self.test_points(multipolygon, num_days)
         
-        # for dots, color in zip(points, colors):
-        #     dots = self.repoint(dots)
-        #     cmap, cmap2 = self.cmap(intersection, dots)
-        #     self.paint(intersection, cmap, cmap2, color, map)
+        for vertex in vertices:
+            folium.Polygon(locations=vertex, color='green', fill=False, opacity=1).add_to(map)
 
-        return map.show_in_browser()
+        for kk, dots in enumerate(points):
+            cmap, cmap2 = self.cmap(intersection, dots)
+            self.paint(intersection, cmap, cmap2, map, kk)
+
+        return map
     
-    # def paint(self, intersection: list, cmap: dict, cmap2: dict, color: str, m: folium.Map):
-    #     utm_proj = pyproj.Proj(proj='utm', zone=20, south=False)
+    def paint(self, intersection: list, cmap: dict, cmap2: dict, m: folium.Map, id: int):
+        utm_proj = pyproj.Proj(proj='utm', zone=20, south=False)
 
-    #     for ii, domain in enumerate(intersection):
-    #         if cmap[ii] > 0.0:
-    #             coords_m = [utm_proj(long, lat) for lat, long in domain]
-    #             coords_m = Polygon(coords_m)
-    #             area = round(coords_m.area / 10000, 3)
+        for ii, domain in enumerate(intersection):
+            if cmap[ii] > 0.0:
+                coords_m = [utm_proj(long, lat) for lat, long in domain]
+                coords_m = Polygon(coords_m)
+                area = round(coords_m.area / 10000, 3)
 
-    #             polygon = folium.Polygon(locations=domain, color='white', fill=True, fill_color=color, opacity=0.4, fill_opacity=cmap[ii])
-    #             popup = folium.Popup(f'Area: {area} ha <br> Time: {cmap2[ii]}%', max_width=400)
-    #             polygon.add_child(popup)
-    #             m.add_child(polygon)
+                polygon = folium.Polygon(locations=domain, color='white', fill=True, fill_color='red', opacity=0.4, fill_opacity=cmap[ii])
+                popup = folium.Popup(f' _id: {id} <br> Area: {area} ha <br> Time: {cmap2[ii]}%', max_width=400)
+                polygon.add_child(popup)
+                m.add_child(polygon)
 
-farm = 'MACSA'
-HM = HeatMap(farm)
+    def test_points(self, multipolygon: MultiPolygon, days: int):
+        minx, miny, maxx, maxy = multipolygon.bounds
+        cenx, ceny = 0.001, 0.001
+        varx, vary = days * cenx, days * ceny
+        X, Y = [], []
+        points = []
+        n = 10
+        while len(points) != n:
+            x = random.uniform(minx, maxx)
+            y = random.uniform(miny, maxy)
+            point = Point(x, y)
+            if multipolygon.contains(point):
+                points.append(point)
+                X.append(x)
+                Y.append(y)
+
+        points = []
+        m = n * 6
+        for x, y in zip(X, Y):
+            new_points = []
+            while len(new_points) != m:
+                x_ = x + random.normalvariate(cenx, varx)
+                y_ = y + random.normalvariate(ceny, vary)
+                point = Point(x_, y_)
+                if multipolygon.contains(point):
+                    new_points.append(point)
+            points.append(new_points)
+        
+        return points
+
+# farm = 'MACSA'
+# HM = HeatMap(farm)
 # print(HM.grid(key='0'))
 # HM.heat_map(date='2022-08-17')
-# print(HM.heat_map(from_date='2023-03-29', to_date='2023-04-02'))
+# HM.heat_map(from_date='2023-03-29', to_date='2023-03-30').show_in_browser()
+# print(HM.heat_map(from_date='2023-03-29', to_date='2023-03-30'))
 # print(HM.minimum_regions())
