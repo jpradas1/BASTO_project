@@ -10,7 +10,7 @@ ______
 
 ## **Hablemos de Bastó**
 
-"Bastó" es sistema basado en IoT (Internet de las cosas) que utiliza caravanas inteligentes para implementar una cerca virtual dinámica, la cual monitorea de manera constante la ubicación, salud y bienestar del ganado, permitiendo así un pastoreo de precisión.
+[Bastó](https://www.bastó.com.ar/) es sistema basado en IoT (Internet de las cosas) que utiliza caravanas inteligentes para implementar una cerca virtual dinámica, la cual monitorea de manera constante la ubicación, salud y bienestar del ganado, permitiendo así un pastoreo de precisión.
 
 La empresa propone una solución para mejorar la producción y el uso de pasturas en grandes potreros, mediante la subdivisión de estos en lotes más pequeños y el control del ganado a través de cercas virtuales y dispositivos inteligentes que monitorean, contienen y dirigen al ganado, optimizando el pastoreo de manera eficiente. Esta tecnología permite reducir costos de infraestructura, mano de obra y tiempo, al tiempo que se mejora la calidad del pastoreo y se aumenta la productividad.
 
