@@ -4,6 +4,11 @@ from dynamics import HeatMap
 from datetime import datetime, timedelta
 
 st.title("Dinámicas de Pastoreo: Mapa de Calor")
+st.info("Esta sección ofrece información esencial sobre el movimiento de los animales, así como \
+        de las zonas de mayor pastoreo. Es decir, se brinda un mapa de calor donde las regiones \
+        con más color representan zonas donde los animales pasaron mas tiempo. Contrariamente a \
+        esto, las zonas más claras son aquellas donde ha ocurrido bajo transito de animales, o \
+        directamente ninguno.")
 
 farm = st.radio(
     "Campo:",
