@@ -17,10 +17,10 @@ class HeatMap(object):
         self.gps_path = './basto_dataset/gps_' + self.farm + '/'
         self.plot_path = './basto_dataset/plots/'
         try:
-            files = os.listdir(self.gps_path)
-            self.heads = [pd.read_csv(self.gps_path + name) for name in files]
-            for df in self.heads:
-                df['timestamp'] = pd.to_datetime(df['timestamp'])
+            # files = os.listdir(self.gps_path)
+            # self.heads = [pd.read_csv(self.gps_path + name) for name in files]
+            # for df in self.heads:
+            #     df['timestamp'] = pd.to_datetime(df['timestamp'])
 
             with open(self.plot_path + self.farm + '.json', 'r') as f:
                 self.plots = json.load(f)

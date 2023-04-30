@@ -133,4 +133,5 @@ dmypy.json
 
 # own purpose
 #*.csv
-basto_dataset/
+basto_dataset/gps_La_Florida/
+basto_dataset/gps_MACSA/
