@@ -106,3 +106,6 @@ python3 tcf_scraping.py .(pwd)/dataset/
 ## FastAPI
 > Como se mencionó anteriormente, se ha realizado una [API](https://fastapi-basto-project.onrender.com/docs) con el proposito de que se pueda consumir los datos finales de forma adecuada y eficiente. Para ello se ha hecho un deploy mediante [render](render.com).
 > <img src="Images/fastapi.png" width="800">
+> 
+## Streamlit App
+> Por otro lado, como alternativa al usuario se ha creado una [app](https://basto-project.onrender.com) empleado streamlit. En esta app el usuario puede mddddr el estado de los cultivos, asimismo cp,p 
