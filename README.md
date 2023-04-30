@@ -101,7 +101,10 @@ python3 tcf_scraping.py .(pwd)/dataset/
 > Siendo **.(pwd)/dataset/** el path absoluto a la carpeta de descarga. Por otro lado, este proceso es opción realizarlo, puesto que en el directorio **./dataset/** se encuentra el resultado final de esta ejecución, es decir, el archivo **./dataset/All_Harvest.csv** contiene ya todos los datos necesarios para trabajar.
 >
 > ### BASTÓ Dataset
-> Como último dataset necesario para este proyecto es el dataset proporcionado por la Start-Up argentina BASTÓ. Este dataset no se encuentra en este repositorio por razones de privacidad.
+> Como último dataset necesario para este proyecto es el dataset proporcionado por la Start-Up argentina BASTÓ. Este dataset no se encuentra en este repositorio por razones de privacidad. Sin embargo, si se llega a contar con esta base de datos en MongoDB, solo es necesario correr el siguiente comando:
+```
+python3 mongodb.py
+```
 > 
 ## FastAPI
 > Como se mencionó anteriormente, se ha realizado una [API](https://fastapi-basto-project.onrender.com/docs) con el proposito de que se pueda consumir los datos finales de forma adecuada y eficiente. Para ello se ha hecho un deploy mediante [render](render.com).
