@@ -79,3 +79,30 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
     <img src = 'https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg' title = 'GitHub' alt = 'GitHub' width = '40' height = '40' />&nbsp;
 
 </div>
+
+# Ejecución del Código
+> Este proyecto presenta diferentes etapas para la ejecución plena del código, donde finalmente se obtiene el dashboard. Este porceso consta de 2 etapas; primero la extracción, transfomación y carga del dataset a emplear (ETL), el segundo paso conta de la ejecucion de la api mediante [FastAPI](https://fastapi-basto-project.onrender.com/docs) y de la app de [Streamlit]().
+
+## Dataset
+> Para este proyecto se extrajo el dataset de 3 fuentes distintas.
+>
+> ### Auravant
+> [Auravant](https://www.auravant.com/) es la herramienta digital la cual nos permite extraer información relevante sobre los campos y lotes, acerca del actual estado de los cultivos y los suelos mediante imágenes satelitales. Principalmente, extraemos de esta herramienta el Índice Verde o Normalized Difference Vegetation Index (NDVI), a través de su [API](https://developers.auravant.com/docs/apis/reference/api_ref_gral/). Para automatizar este proceso de extraer data relevante para el proyecto se crea el script de python
+```
+auravant_api.py
+```
+> Este archivo realiza consultas automaticas a la API de auraventa, transformado los datos a DataFrames de pandas para tratar posteriormente con datos como el ID del lote, su nombre, las dimensiones del mismo, su area, y más importante su NDVI.
+>
+> ### Tablas de Control Forrajero
+> Uno de los objetivos fundamentales del proyecto consta en calcular la biomasa de un determinado lote relacionado con un cierto usurio. Sin embargo, es necesario conocer los valores de biomasa para distintos tipos de vegetación. Para ello la página web de [Tablas de Control Forrajero](https://tableroforrajero.crea.org.ar/dashboardcrea2/index.php/crea_session_manager) oferece un extenso dataset sobre la producción mensual de cada vegetación a lo largo de Argentina y parte de Uruguay. Debido a la gran cantidad de datos a descargar se crea el archivo **tcf_scrapping.py** el cual automatiza este proceso de descarga gracias a la librería **Selenium** que emplea el navegador **FireFox** para la obtención de los datos. Para realizar este proceso se ha de correr el siguiente comando:
+```
+python3 tcf_scraping.py .(pwd)/dataset/
+```
+> Siendo **.(pwd)/dataset/** el path absoluto a la carpeta de descarga. Por otro lado, este proceso es opción realizarlo, puesto que en el directorio **./dataset/** se encuentra el resultado final de esta ejecución, es decir, el archivo **./dataset/All_Harvest.csv** contiene ya todos los datos necesarios para trabajar.
+>
+> ### BASTÓ Dataset
+> Como último dataset necesario para este proyecto es el dataset proporcionado por la Start-Up argentina BASTÓ. Este dataset no se encuentra en este repositorio por razones de privacidad.
+> 
+## FastAPI
+> Como se mencionó anteriormente, se ha realizado una [API](https://fastapi-basto-project.onrender.com/docs) con el proposito de que se pueda consumir los datos finales de forma adecuada y eficiente. Para ello se ha hecho un deploy mediante [render](render.com).
+> <img src="Images/fastapi.png" width="800">
