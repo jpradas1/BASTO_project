@@ -81,7 +81,7 @@ La empresa propone una solución para mejorar la producción y el uso de pastura
 </div>
 
 # Ejecución del Código
-> Este proyecto presenta diferentes etapas para la ejecución plena del código, donde finalmente se obtiene el dashboard. Este porceso consta de 2 etapas; primero la extracción, transfomación y carga del dataset a emplear (ETL), el segundo paso conta de la ejecucion de la api mediante [FastAPI](https://fastapi-basto-project.onrender.com/docs) y de la app de [Streamlit]().
+> Este proyecto presenta diferentes etapas para la ejecución plena del código, donde finalmente se obtiene el dashboard. Este porceso consta de 2 etapas; primero la extracción, transfomación y carga del dataset a emplear (ETL), el segundo paso conta de la ejecucion de la api mediante [FastAPI](https://fastapi-basto-project.onrender.com/docs) y de la app de [Streamlit](https://basto-project.onrender.com).
 
 ## Dataset
 > Para este proyecto se extrajo el dataset de 3 fuentes distintas.
