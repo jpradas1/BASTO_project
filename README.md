@@ -113,8 +113,8 @@ python3 mongodb.py
 ## Streamlit App
 > Por otro lado, como alternativa al usuario se ha creado una [app](https://basto-project.onrender.com) empleado streamlit. En esta app el usuario puede monitorear el estado de los cultivos, asimismo la actidad actual de biomasa en el lote, las areas consumidas por el ganado, además de aquellas areas remanentes.
 > 
-> <img src="Images/streamlit_1.png" width="400">
-> <img src="Images/streamlit_2.png" width="400">
+> <img src="Images/streamlit_1.png" width="350">
+> <img src="Images/streamlit_2.png" width="350">
 > <img src="Images/streamlit_3.png" width="800">
 > 
 > En la última imagen se visualiza las área mayormente ocupadas por el ganado (representadas por las regiones más oscuras), contrariamente las áreas claras son aquellas donde el ganado poco ha pastado.
