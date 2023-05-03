@@ -2,14 +2,20 @@ from pymongo import MongoClient
 import pandas as pd
 import os, json
 
+'''This script with the Mongo database of BASTO, first it perform the conexion to the 
+    database through localhost on the default port 27017'''
+
 client = MongoClient('localhost', 27017)
 basto_db = client.basto
 
 def pathing(paths: list):
+    '''just check if the required folders exist'''
     for path in paths:
         if not os.path.exists(path):
             os.makedirs(path)
 
+'''to filter the data to deal with, it is used the following aggregation function
+    on BASTO database'''
 def aggregate(farm: str, device: str):
     print('Extracting from Mongodb', end='\r')
     pipeline = [
@@ -69,6 +75,8 @@ def aggregate(farm: str, device: str):
 
     return this_aggregate
 
+'''Once the data has filtered, it is filtered again to take into account only data recorded by the
+    GPS'''
 def GPS(farm: str, device: str, path: str):
     this_aggregate = [x for x in aggregate(farm, device)]
 
@@ -86,6 +94,7 @@ def GPS(farm: str, device: str, path: str):
         for keys in list(dataRowData.keys())[1:3]:
             time_position[doc['UUID']][keys].append(dataRowData[keys])
 
+    '''Create a csv for each GPS with its historical records of position'''
     ii = 1
     for k, v in time_position.items():
         df = pd.DataFrame(v).dropna()
@@ -93,6 +102,7 @@ def GPS(farm: str, device: str, path: str):
         print(f'Creating csv {ii} of {len(uuid)}', end='\r')
         ii += 1
 
+'''Also it extract the limits of each fields contained in the farm, which here is named as plots'''
 def plots(farm: str, plot_path: str):
     settlements = basto_db.settlements
     settlements = [x for x in settlements.find({'name': '{}'.format(farm)})]
@@ -135,6 +145,7 @@ if __name__ == "__main__":
     gps_path = './basto_dataset/gps_{}/'.format(farm.replace(' ', '_'))
     plot_path = './basto_dataset/plots/'
 
+    '''let's create the needed data'''
     pathing([gps_path, plot_path])
     GPS(farm, device, gps_path)
     plots(farm, plot_path)
