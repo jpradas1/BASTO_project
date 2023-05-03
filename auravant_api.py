@@ -5,7 +5,9 @@ import os
 
 '''
 This script provides methods intercting with the Auravant's API:
-    https://developers.auravant.com/docs/apis/reference/api_ref_gral/
+        https://api.auravant.com/api/
+    Auraventa API documentation:
+        https://developers.auravant.com/docs/apis/reference/api_ref_gral/
 
 It establishes conexions with this API, where it gets information about farms, thier fields,
 and more informatecion related. Moreover, it is possible to set posts and deletes, namely, it 
@@ -17,7 +19,7 @@ class Auravant_API(object):
 
     '''
     This object receives a paramater named as "token", which allows to log in user account
-    (For more information about it, read README.md file). Thus using that token it is created
+    (For more information about it, read Auravant API documentation). Thus using that token it is created
     a header method to reach api through other method '_get_info'. 
     '''
     def __init__(self, token: str):
@@ -31,6 +33,7 @@ class Auravant_API(object):
     
     def _get_info(self):
         request = requests.get(self.url + 'getfields', headers=self._headers())
+        # transforme respose to json object
         response = json.loads(request.text)
         return response['user']
     
@@ -47,6 +50,8 @@ class Auravant_API(object):
         L = lambda x: len([x for x in farms[x]['fields']])
         number = [L(x) for x in id_farms]
 
+        # with farms's id, name, bbox and number of fields in each farm
+        # it created a pandas dataframe with it
         df = pd.DataFrame({'id_farm': id_farms, 'name': names,
                             'bbox': bbox, 'N_fields': number})
         
@@ -59,7 +64,8 @@ class Auravant_API(object):
         bbox = [fields[x]['shapes']['current']['bbox'] for x in id_fields]
         polygon = [fields[x]['shapes']['current']['polygon'] for x in id_fields]
         areas = [fields[x]['shapes']['current']['area'] for x in id_fields]
-
+        
+        # for a specific user's farm it extracted each data related to each field in it
         df = pd.DataFrame({'id_field': id_fields, 'name': names, 'area': areas,
                             'polygon': polygon, 'bbox': bbox})
         
@@ -77,7 +83,8 @@ class Auravant_API(object):
         id_farms = [x for x in farms.keys() for y in farms[x]['fields'].keys()]
         areas = [farms[x]['fields'][y]['shapes']['current']['area'] for x in farms.keys() \
                  for y in farms[x]['fields'].keys()]
-
+        
+        # return all the user's field, no matter the farm
         df =  pd.DataFrame({'id_field': id_fields, 'name': names, 'id_farm': id_farms,
                             'area': areas, 'polygon': polygon, 'bbox': bbox})
 
@@ -112,6 +119,9 @@ class Auravant_API(object):
         df = pd.DataFrame({'date': dates, 'ndvi_mean': values})
         df = df.loc[(df['date'] >= date_from) & (df['date'] <= date_to)]
 
+        ''' returns a pandas DataFrame with all NDVI records of this field inserted,
+            otherwise this can only return the most recent record if parameter
+            'latest' is set as True '''
         if latest:
             return df.iloc[0,:].values
 
@@ -125,6 +135,7 @@ class Auravant_API(object):
     
     def get_max_vegetation(self):
         file = './dataset/All_Harvest.csv'
+
         if os.path.exists(file):
             df = pd.read_csv(file).set_index('Fecha')
             crops = df.columns
@@ -166,4 +177,5 @@ class Auravant_API(object):
     
     def delete_field(self, id_field: str):
         delete = requests.get(self.url+'borrarlotes?lote='+id_field, headers=self._headers())
-        return delete.text
+        response = json.loads(delete.text)
+        return response
